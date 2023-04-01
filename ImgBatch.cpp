@@ -1,15 +1,25 @@
 #include <iostream>
 #include <iomanip>
+#include <map>
 
 class ArgumentParser {
 	public:
 		void RegisterFlag(const std::string& flag) {
-
+			if (!flag.empty()) {
+				m_Flags[flag] = false;
+			}
 		}
 
-		bool GetFlag(const std::string& flag) {
+		bool GetFlag(const std::string& flag) const {
+			if (!flag.empty()) {
+				auto flagIt{ m_Flags.find(flag) };
+				if (flagIt != std::end(m_Flags)) {
+					return flagIt->second;
+				}
+			}
 
-			return 0;
+
+			return false;
 		}
 
 		void Parse(int agrc, char* argv[]) {
@@ -17,6 +27,7 @@ class ArgumentParser {
 		}
 
 	private:
+		std::map<std::string, bool> m_Flags;
 };
 
 int main(int argc, char* argv[]) {
@@ -35,8 +46,6 @@ int main(int argc, char* argv[]) {
 	std::cout << "Resize : " << argParser.GetFlag("resize") << std::endl;
 	std::cout << "Scale : " << argParser.GetFlag("scale") << std::endl;
 
-
-	getchar();
 
 	return 0;
 }
