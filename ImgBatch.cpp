@@ -22,8 +22,30 @@ class ArgumentParser {
 			return false;
 		}
 
-		void Parse(int agrc, char* argv[]) {
+		void Parse(int argc, char* argv[]) {
+			if (argc > 1) {
+				for (int i = 1; i < argc; ++i) {
+					std::string arg = argv[i];
 
+					if (arg.length() >= 3) {
+						// Argumentos tem que ter pelo menos 3 caracteres
+						// os "--" iniciais e pelo menos um terceiro carater
+						if (arg[0] == '-' && arg[1] == '-') {
+							// Primeiro vamos remover os "--" iniciasi
+							arg = arg.substr(2);
+							if (arg.find_first_of('=') != std::string::npos) {
+
+							}
+							else {
+								auto flagIt = m_Flags.find(arg);
+								if (flagIt != std::end(m_Flags)) {
+									flagIt->second = true;
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 
 	private:
